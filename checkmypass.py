@@ -28,16 +28,17 @@ def pwned_api_check(password):
     return get_password_leaks_count(response, tail)
 
 
-def main(args):
-    for password in args:
-        count = pwned_api_check(password)
-        if count:
-            print(
-                f'{password} was found {count} times... You should probably change your password')
-        else:
-            print(f'{password} was NOT found. Carry on!')
-    return 'done!'
+def main(text_file):
+    with open(text_file) as text_file:
+        for password in text_file:
+            password = password[:-1]
+            count = pwned_api_check(password)
+            if count:
+                print(f'{password} was found {count} times... You should probably change your password')
+            else:
+                print(f'{password} was NOT found. Carry on!')
+        return 'done!'
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main(sys.argv[1]))
